@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fitness Tracker ER Diagram (Traditional)</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f8f8f8; }
+        h1 { text-align: center; }
+        .diagram-container { width: 100vw; height: 90vh; overflow: auto; background: #fff; border: 1px solid #ccc; }
+        svg { background: #fff; }
+        .entity { fill: #e3f2fd; stroke: #1976d2; stroke-width: 2; }
+        .attribute { fill: #fffde7; stroke: #fbc02d; stroke-width: 2; }
+        .relationship { fill: #fce4ec; stroke: #c2185b; stroke-width: 2; }
+        .label { font-size: 13px; text-anchor: middle; dominant-baseline: middle; }
+        .legend { font-size: 12px; fill: #444; }
+    </style>
+</head>
+<body>
+    <h1>Fitness Tracker ER Diagram (Traditional)</h1>
+    <div class="diagram-container">
+        <svg width="3200" height="2000">
+            <!-- USERS Entity (center) -->
+            <rect x="1550" y="900" width="120" height="40" class="entity"/>
+            <text x="1610" y="925" class="label">users</text>
+            <!-- USERS Attributes (spaced around) -->
+            <ellipse cx="1610" cy="850" rx="45" ry="16" class="attribute"/>
+            <text x="1610" y="850" class="label">id</text>
+            <ellipse cx="1510" cy="880" rx="45" ry="16" class="attribute"/>
+            <text x="1510" y="880" class="label">username</text>
+            <ellipse cx="1710" cy="880" rx="45" ry="16" class="attribute"/>
+            <text x="1710" y="880" class="label">email</text>
+            <ellipse cx="1510" cy="960" rx="45" ry="16" class="attribute"/>
+            <text x="1510" y="960" class="label">password</text>
+            <ellipse cx="1710" cy="960" rx="45" ry="16" class="attribute"/>
+            <text x="1710" y="960" class="label">created_at</text>
+            <!-- USERS Attribute Lines -->
+            <line x1="1610" y1="900" x2="1610" y2="866" stroke="#1976d2"/>
+            <line x1="1550" y1="920" x2="1555" y2="888" stroke="#1976d2"/>
+            <line x1="1670" y1="920" x2="1665" y2="888" stroke="#1976d2"/>
+            <line x1="1550" y1="940" x2="1555" y2="960" stroke="#1976d2"/>
+            <line x1="1670" y1="940" x2="1665" y2="960" stroke="#1976d2"/>
+
+            <!-- EXERCISES Entity (right) -->
+            <rect x="2000" y="900" width="120" height="40" class="entity"/>
+            <text x="2060" y="925" class="label">exercises</text>
+            <ellipse cx="2060" cy="850" rx="45" ry="16" class="attribute"/>
+            <text x="2060" y="850" class="label">id</text>
+            <ellipse cx="2000" cy="950" rx="45" ry="16" class="attribute"/>
+            <text x="2000" y="950" class="label">user_id (FK)</text>
+            <ellipse cx="2120" cy="950" rx="45" ry="16" class="attribute"/>
+            <text x="2120" y="950" class="label">name</text>
+            <!-- EXERCISES Attribute Lines -->
+            <line x1="2060" y1="900" x2="2060" y2="866" stroke="#1976d2"/>
+            <line x1="2000" y1="940" x2="2000" y2="950" stroke="#1976d2"/>
+            <line x1="2120" y1="940" x2="2120" y2="950" stroke="#1976d2"/>
+
+            <!-- RELATIONSHIP: users creates exercises -->
+            <polygon points="1700,920 1800,920 1750,970" class="relationship"/>
+            <text x="1750" y="940" class="label">creates</text>
+            <line x1="1670" y1="920" x2="1700" y2="920" stroke="#c2185b"/>
+            <line x1="1800" y1="920" x2="2000" y2="920" stroke="#c2185b"/>
+
+            <!-- WORKOUT_ROUTINES Entity (bottom right) -->
+            <rect x="2000" y="1200" width="120" height="40" class="entity"/>
+            <text x="2060" y="1225" class="label">workout_routines</text>
+            <ellipse cx="2060" cy="1250" rx="45" ry="16" class="attribute"/>
+            <text x="2060" y="1250" class="label">id</text>
+            <ellipse cx="2000" cy="1190" rx="45" ry="16" class="attribute"/>
+            <text x="2000" y="1190" class="label">user_id (FK)</text>
+            <ellipse cx="2120" cy="1190" rx="45" ry="16" class="attribute"/>
+            <text x="2120" y="1190" class="label">name</text>
+            <!-- WORKOUT_ROUTINES Attribute Lines -->
+            <line x1="2060" y1="1240" x2="2060" y2="1250" stroke="#1976d2"/>
+            <line x1="2000" y1="1200" x2="2000" y2="1190" stroke="#1976d2"/>
+            <line x1="2120" y1="1200" x2="2120" y2="1190" stroke="#1976d2"/>
+
+            <!-- RELATIONSHIP: users creates workout_routines -->
+            <polygon points="1670,940 1800,1200 1700,1200" class="relationship"/>
+            <text x="1750" y="1180" class="label">creates</text>
+            <line x1="1670" y1="940" x2="1700" y2="1200" stroke="#c2185b"/>
+            <line x1="1800" y1="1200" x2="2000" y2="1220" stroke="#c2185b"/>
+
+            <!-- WORKOUT_ROUTINE_EXERCISES Entity (bottom right) -->
+            <rect x="2400" y="1200" width="160" height="40" class="entity"/>
+            <text x="2480" y="1225" class="label">workout_routine_exercises</text>
+            <ellipse cx="2480" cy="1250" rx="45" ry="16" class="attribute"/>
+            <text x="2480" y="1250" class="label">id</text>
+            <ellipse cx="2420" cy="1190" rx="45" ry="16" class="attribute"/>
+            <text x="2420" y="1190" class="label">routine_id (FK)</text>
+            <ellipse cx="2540" cy="1190" rx="45" ry="16" class="attribute"/>
+            <text x="2540" y="1190" class="label">exercise_id (FK)</text>
+            <!-- WORKOUT_ROUTINE_EXERCISES Attribute Lines -->
+            <line x1="2480" y1="1240" x2="2480" y2="1250" stroke="#1976d2"/>
+            <line x1="2420" y1="1200" x2="2420" y2="1190" stroke="#1976d2"/>
+            <line x1="2540" y1="1200" x2="2540" y2="1190" stroke="#1976d2"/>
+
+            <!-- RELATIONSHIP: workout_routines contains workout_routine_exercises -->
+            <polygon points="2120,1220 2300,1220 2210,1270" class="relationship"/>
+            <text x="2210" y="1240" class="label">contains</text>
+            <line x1="2120" y1="1220" x2="2210" y2="1220" stroke="#c2185b"/>
+            <line x1="2300" y1="1220" x2="2400" y2="1220" stroke="#c2185b"/>
+
+            <!-- REVIEWS Entity (left) -->
+            <rect x="1100" y="900" width="120" height="40" class="entity"/>
+            <text x="1160" y="925" class="label">reviews</text>
+            <ellipse cx="1160" cy="850" rx="45" ry="16" class="attribute"/>
+            <text x="1160" y="850" class="label">id</text>
+            <ellipse cx="1100" cy="950" rx="45" ry="16" class="attribute"/>
+            <text x="1100" y="950" class="label">username (FK)</text>
+            <ellipse cx="1220" cy="950" rx="45" ry="16" class="attribute"/>
+            <text x="1220" y="950" class="label">review</text>
+            <!-- REVIEWS Attribute Lines -->
+            <line x1="1160" y1="900" x2="1160" y2="866" stroke="#1976d2"/>
+            <line x1="1100" y1="940" x2="1100" y2="950" stroke="#1976d2"/>
+            <line x1="1220" y1="940" x2="1220" y2="950" stroke="#1976d2"/>
+
+            <!-- RELATIONSHIP: users writes reviews -->
+            <polygon points="1510,920 1300,920 1410,970" class="relationship"/>
+            <text x="1410" y="940" class="label">writes</text>
+            <line x1="1550" y1="920" x2="1510" y2="920" stroke="#c2185b"/>
+            <line x1="1300" y1="920" x2="1100" y2="920" stroke="#c2185b"/>
+
+            <!-- BMI_RECORDS Entity (top) -->
+            <rect x="1550" y="500" width="120" height="40" class="entity"/>
+            <text x="1610" y="525" class="label">bmi_records</text>
+            <ellipse cx="1610" cy="470" rx="45" ry="16" class="attribute"/>
+            <text x="1610" y="470" class="label">id</text>
+            <ellipse cx="1550" cy="550" rx="45" ry="16" class="attribute"/>
+            <text x="1550" y="550" class="label">user_id (FK)</text>
+            <ellipse cx="1670" cy="550" rx="45" ry="16" class="attribute"/>
+            <text x="1670" y="550" class="label">bmi</text>
+            <!-- BMI_RECORDS Attribute Lines -->
+            <line x1="1610" y1="500" x2="1610" y2="486" stroke="#1976d2"/>
+            <line x1="1550" y1="540" x2="1550" y2="550" stroke="#1976d2"/>
+            <line x1="1670" y1="540" x2="1670" y2="550" stroke="#1976d2"/>
+
+            <!-- RELATIONSHIP: users records bmi_records -->
+            <polygon points="1610,900 1610,600 1650,900" class="relationship"/>
+            <text x="1630" y="700" class="label">records</text>
+            <line x1="1610" y1="900" x2="1610" y2="600" stroke="#c2185b"/>
+            <line x1="1610" y1="540" x2="1610" y2="500" stroke="#c2185b"/>
+
+            <!-- LEGEND -->
+            <rect x="50" y="1850" width="300" height="100" fill="#fff" stroke="#ccc"/>
+            <text x="200" y="1870" class="legend">Legend:</text>
+            <rect x="70" y="1880" width="30" height="20" class="entity"/>
+            <text x="110" y="1895" class="legend">Entity (Table)</text>
+            <ellipse cx="85" cy="1920" rx="15" ry="10" class="attribute"/>
+            <text x="110" y="1925" class="legend">Attribute (Field)</text>
+            <polygon points="70,1950 100,1950 85,1970" class="relationship"/>
+            <text x="110" y="1960" class="legend">Relationship</text>
+        </svg>
+    </div>
+    <p style="text-align:center; color:#888;">(Diagram is scrollable. For a full diagram, expand the SVG with more entities and relationships as needed.)</p>
+</body>
+</html> 
