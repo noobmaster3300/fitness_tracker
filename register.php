@@ -20,7 +20,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("ssdsisssss", $full_name, $username, $weight, $blood_group, $phone, $address, $email, $gender, $dob, $password);
 
     if ($stmt->execute()) {
-        $msg = "Registration successful! <a href='index.php'>Login here</a>";
+        $_SESSION['user'] = $user;
+        header("Location: welcome.php");
+        exit;
     } else {
         $msg = "Error: " . $conn->error;
     }

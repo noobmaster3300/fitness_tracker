@@ -225,16 +225,16 @@ $user = $_SESSION['user'];
             <div class="description">Stay updated with latest fitness trends</div>
         </a>
 
-        <a href="profile.php" class="card">
-            <span class="card-icon">👤</span>
-            <strong>Profile</strong>
-            <div class="description">View and edit your profile information</div>
-        </a>
-
         <a href="life_in_weeks.php" class="card">
             <span class="card-icon">📅</span>
             <strong>Your Life in Weeks</strong>
             <div class="description">Visualize your life in weeks</div>
+        </a>
+
+        <a href="profile.php" class="card">
+            <span class="card-icon">👤</span>
+            <strong>Profile</strong>
+            <div class="description">View and edit your profile information</div>
         </a>
     </div>
 
