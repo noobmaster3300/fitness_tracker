@@ -149,11 +149,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <title>Blood Donation Eligibility - Fitness Tracker</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/shared.css">
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f5f5f5; margin: 0; padding: 20px; }
-        .container { max-width: 700px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #333; margin-bottom: 10px; }
-        .subtitle { text-align: center; color: #666; margin-bottom: 30px; }
         label { display: block; margin-bottom: 8px; font-weight: bold; color: #333; }
         select, input[type=number], input[type=date] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 20px; box-sizing: border-box; }
         .checkbox-group { margin-bottom: 20px; }
@@ -166,8 +163,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .box h4 { color: #333; margin-bottom: 10px; }
         .blood-groups { display: flex; flex-wrap: wrap; gap: 10px; }
         .blood-group { background-color: #dc3545; color: white; padding: 8px 12px; border-radius: 4px; font-weight: bold; }
-        .home-btn { display: inline-block; padding: 10px 20px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 4px; margin-bottom: 20px; }
-        .home-btn:hover { background-color: #545b62; }
         .not-eligible { color: #dc3545; font-weight: bold; }
         .eligible { color: #28a745; font-weight: bold; }
         ul { margin: 0 0 10px 20px; }
@@ -177,84 +172,104 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
 
-<a href="dashboard.php" class="home-btn">← Back to Dashboard</a>
-
 <div class="container">
-    <h2>Blood Donation Eligibility</h2>
-    <p class="subtitle">Check if you can donate blood and see your compatibility</p>
-
-    <form method="POST">
-        <label for="blood_group">Blood Group:</label>
-        <select name="blood_group" id="blood_group" required>
-            <option value="">Choose Blood Group</option>
-            <?php foreach ($compatibility as $bg => $v): ?>
-                <option value="<?php echo $bg; ?>" <?php echo ($selectedGroup == $bg) ? 'selected' : ''; ?>><?php echo $bg; ?></option>
-            <?php endforeach; ?>
-        </select>
-
-        <label for="age">Age:</label>
-        <input type="number" name="age" id="age" min="16" max="100" value="<?php echo safe($age); ?>" required>
-
-        <label for="weight">Weight (kg):</label>
-        <input type="number" name="weight" id="weight" min="30" max="200" value="<?php echo safe($weight); ?>" required>
-
-        <label>Any of the following apply?</label>
-        <div class="checkbox-group">
-            <?php foreach ($healthOptions as $key => $label): ?>
-                <label><input type="checkbox" name="health[]" value="<?php echo $key; ?>" <?php echo in_array($key, $health) ? 'checked' : ''; ?>> <?php echo $label; ?></label>
-            <?php endforeach; ?>
+    <div class="page-header">
+        <a href="dashboard.php" class="back-btn" title="Back to Dashboard">&#8592;</a>
+        <div class="title-section">
+            <h1>Blood Donation Eligibility</h1>
+            <div class="subtitle">Check if you can donate blood and see your compatibility</div>
         </div>
+    </div>
 
-        <label for="last_donation">Last Donation Date:</label>
-        <input type="date" name="last_donation" id="last_donation" value="<?php echo safe($lastDonation); ?>">
+    <div class="card mb-20">
+        <form method="POST">
+            <label for="blood_group">Blood Group:</label>
+            <select name="blood_group" id="blood_group" required>
+                <option value="">Choose Blood Group</option>
+                <?php foreach ($compatibility as $bg => $v): ?>
+                    <option value="<?php echo $bg; ?>" <?php echo ($selectedGroup == $bg) ? 'selected' : ''; ?>><?php echo $bg; ?></option>
+                <?php endforeach; ?>
+            </select>
 
-        <button type="submit">Check Eligibility</button>
-    </form>
+            <label for="age">Age:</label>
+            <input type="number" name="age" id="age" min="16" max="100" value="<?php echo safe($age); ?>" required>
 
-    <?php if ($_SERVER['REQUEST_METHOD'] == 'POST'): ?>
-    <div class="result">
-        <h3>Results<?php if ($selectedGroup) echo ' for Blood Group ' . safe($selectedGroup); ?></h3>
-        <div class="box">
-            <h4>Status:</h4>
-            <div class="<?php echo $canDonate ? 'eligible' : 'not-eligible'; ?>"><?php echo $eligibilityMsg; ?></div>
-            <?php if (!$canDonate && !empty($reasons)): ?>
-                <ul>
-                    <?php foreach ($reasons as $reason): ?>
-                        <li><?php echo $reason; ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            <?php endif; ?>
-            <?php if (!$canDonate && !empty($personalAdvice)): ?>
-                <div class="advice-list">
-                    <strong>Personalized advice:</strong>
-                    <ul>
-                        <?php foreach ($personalAdvice as $advice): ?>
-                            <li><?php echo $advice; ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            <?php endif; ?>
-            <?php if (!$canDonate && $daysLeft !== null && $daysLeft > 0): ?>
-                <div class="days-left">You can donate again in <?php echo $daysLeft; ?> day<?php echo $daysLeft == 1 ? '' : 's'; ?>.</div>
-            <?php endif; ?>
-        </div>
-        <?php if ($selectedGroup && !empty($donateTo)): ?>
-        <div class="box">
-            <h4>🩸 You can donate to:</h4>
-            <div class="blood-groups">
-                <?php foreach ($donateTo as $group): ?>
-                    <span class="blood-group"><?php echo $group; ?></span>
+            <label for="weight">Weight (kg):</label>
+            <input type="number" name="weight" id="weight" min="30" max="200" value="<?php echo safe($weight); ?>" required>
+
+            <label for="last_donation">Last Donation Date (if any):</label>
+            <input type="date" name="last_donation" id="last_donation" value="<?php echo safe($lastDonation); ?>">
+
+            <div class="checkbox-group">
+                <label>Health Conditions (check all that apply):</label>
+                <?php foreach ($healthOptions as $key => $option): ?>
+                    <label>
+                        <input type="checkbox" name="health[]" value="<?php echo $key; ?>" <?php echo in_array($key, $health) ? 'checked' : ''; ?>>
+                        <?php echo $option; ?>
+                    </label>
                 <?php endforeach; ?>
             </div>
-        </div>
-        <?php endif; ?>
-        <?php if ($nextEligibleDate): ?>
-        <div class="box">
-            <h4>🩺 Next eligible donation date:</h4>
-            <div><?php echo $nextEligibleDate; ?></div>
-        </div>
-        <?php endif; ?>
+
+            <button type="submit">Check Eligibility</button>
+        </form>
     </div>
+
+    <?php if ($_SERVER['REQUEST_METHOD'] == 'POST' && $selectedGroup): ?>
+        <div class="card mb-20">
+            <div class="result">
+                <h3><?php echo $eligibilityMsg; ?></h3>
+                
+                <?php if ($canDonate): ?>
+                    <div class="box">
+                        <h4>✅ You are eligible to donate blood!</h4>
+                        <p>Thank you for considering blood donation. Your donation can save up to 3 lives.</p>
+                    </div>
+                <?php else: ?>
+                    <div class="box">
+                        <h4>⚠️ Eligibility Issues:</h4>
+                        <ul>
+                            <?php foreach ($reasons as $reason): ?>
+                                <li><?php echo $reason; ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                        
+                        <?php if (!empty($personalAdvice)): ?>
+                            <h4>Personalized Advice:</h4>
+                            <ul class="advice-list">
+                                <?php foreach ($personalAdvice as $advice): ?>
+                                    <li><?php echo $advice; ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php endif; ?>
+                        
+                        <?php if ($nextEligibleDate && $daysLeft !== null): ?>
+                            <p><strong>Next eligible date:</strong> <span class="days-left"><?php echo $nextEligibleDate; ?></span></p>
+                            <p><strong>Days remaining:</strong> <span class="days-left"><?php echo $daysLeft; ?> days</span></p>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="box">
+                <h4>Blood Compatibility for <?php echo $selectedGroup; ?>:</h4>
+                
+                <h5>You can donate to:</h5>
+                <div class="blood-groups">
+                    <?php foreach ($donateTo as $bg): ?>
+                        <span class="blood-group"><?php echo $bg; ?></span>
+                    <?php endforeach; ?>
+                </div>
+                
+                <h5>You can receive from:</h5>
+                <div class="blood-groups">
+                    <?php foreach ($receiveFrom as $bg): ?>
+                        <span class="blood-group"><?php echo $bg; ?></span>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
     <?php endif; ?>
 </div>
 

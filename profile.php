@@ -52,21 +52,8 @@ $current_age = $today->diff($dob_date)->y;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile - Fitness Tracker</title>
+    <link rel="stylesheet" href="css/shared.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
         .profile-header {
             text-align: center;
             margin-bottom: 30px;
@@ -127,17 +114,32 @@ $current_age = $today->diff($dob_date)->y;
         .detail-value {
             color: #333;
         }
-        .home-btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #6c757d;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            margin-bottom: 20px;
+        .danger-zone {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
         }
-        .home-btn:hover {
-            background-color: #545b62;
+        .danger-zone h3 {
+            color: #721c24;
+            margin-bottom: 15px;
+        }
+        .danger-zone p {
+            color: #721c24;
+            margin-bottom: 15px;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
         }
         @media (max-width: 768px) {
             .profile-details {
@@ -148,86 +150,76 @@ $current_age = $today->diff($dob_date)->y;
 </head>
 <body>
 
-<a href="dashboard.php" class="home-btn">← Back to Dashboard</a>
-
 <div class="container">
-    <div class="profile-header">
-        <div class="profile-avatar">
-            <?php echo strtoupper(substr($user['full_name'], 0, 1)); ?>
+    <div class="page-header">
+        <a href="dashboard.php" class="back-btn" title="Back to Dashboard">&#8592;</a>
+        <div class="title-section">
+            <h1>My Profile</h1>
+            <div class="subtitle">Manage your account and personal information</div>
         </div>
-        <h1 class="profile-name"><?php echo htmlspecialchars($user['full_name']); ?></h1>
-        <p class="profile-subtitle">Fitness Tracker Member</p>
     </div>
 
-    <div class="profile-details">
-        <div class="detail-group">
-            <h3>Personal Information</h3>
-            <div class="detail-item">
-                <span class="detail-label">Full Name:</span>
-                <span class="detail-value"><?php echo htmlspecialchars($user['full_name']); ?></span>
+    <div class="card mb-20">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <?php echo strtoupper(substr($user['full_name'], 0, 1)); ?>
             </div>
-            <div class="detail-item">
-                <span class="detail-label">Username:</span>
-                <span class="detail-value"><?php echo htmlspecialchars($user['username']); ?></span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">Email:</span>
-                <span class="detail-value"><?php echo htmlspecialchars($user['email']); ?></span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">Gender:</span>
-                <span class="detail-value"><?php echo htmlspecialchars($user['gender']); ?></span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">Date of Birth:</span>
-                <span class="detail-value"><?php echo htmlspecialchars($user['dob']); ?></span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">Age:</span>
-                <span class="detail-value"><?php echo $current_age; ?> years</span>
-            </div>
+            <h2 class="profile-name"><?php echo htmlspecialchars($user['full_name']); ?></h2>
+            <p class="profile-subtitle">Fitness Tracker Member</p>
         </div>
 
-        <div class="detail-group">
-            <h3>Health Information</h3>
-            <div class="detail-item">
-                <span class="detail-label">Weight:</span>
-                <span class="detail-value"><?php echo htmlspecialchars($user['weight']); ?> kg</span>
+        <div class="profile-details">
+            <div class="detail-group">
+                <h3>Personal Information</h3>
+                <div class="detail-item">
+                    <span class="detail-label">Full Name:</span>
+                    <span class="detail-value"><?php echo htmlspecialchars($user['full_name']); ?></span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Username:</span>
+                    <span class="detail-value"><?php echo htmlspecialchars($user['username']); ?></span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Email:</span>
+                    <span class="detail-value"><?php echo htmlspecialchars($user['email']); ?></span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Gender:</span>
+                    <span class="detail-value"><?php echo htmlspecialchars($user['gender']); ?></span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Date of Birth:</span>
+                    <span class="detail-value"><?php echo htmlspecialchars($user['dob']); ?></span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Age:</span>
+                    <span class="detail-value"><?php echo $current_age; ?> years</span>
+                </div>
             </div>
-            <div class="detail-item">
-                <span class="detail-label">Blood Group:</span>
-                <span class="detail-value"><?php echo htmlspecialchars($user['blood_group']); ?></span>
-            </div>
-        </div>
 
-        <div class="detail-group">
-            <h3>Contact Information</h3>
-            <div class="detail-item">
-                <span class="detail-label">Phone:</span>
-                <span class="detail-value"><?php echo htmlspecialchars($user['phone']); ?></span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">Address:</span>
-                <span class="detail-value"><?php echo htmlspecialchars($user['address']); ?></span>
-            </div>
-        </div>
-
-        <div class="detail-group">
-            <h3>Account Information</h3>
-            <div class="detail-item">
-                <span class="detail-label">Member Since:</span>
-                <span class="detail-value"><?php echo date('F j, Y', strtotime($user['created_at'])); ?></span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">Account Status:</span>
-                <span class="detail-value">Active</span>
+            <div class="detail-group">
+                <h3>Health Information</h3>
+                <div class="detail-item">
+                    <span class="detail-label">Weight:</span>
+                    <span class="detail-value"><?php echo htmlspecialchars($user['weight']); ?> kg</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Blood Group:</span>
+                    <span class="detail-value"><?php echo htmlspecialchars($user['blood_group']); ?></span>
+                </div>
             </div>
         </div>
     </div>
-    <!-- Delete Account Button -->
-    <form method="post" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone!');" style="margin-top:30px;">
-        <button type="submit" name="delete_account" style="background:#e57373;color:#fff;padding:10px 20px;border:none;border-radius:4px;cursor:pointer;">Delete Account</button>
-    </form>
+
+    <div class="card">
+        <div class="danger-zone">
+            <h3>Delete Account</h3>
+            <p><strong>Note:</strong> If you delete your account, all your data will be gone forever. This includes your exercise logs, water records, and personal info.</p>
+            <form method="post" onsubmit="return confirm('Are you sure you want to delete your account? This cannot be undone.');">
+                <button type="submit" name="delete_account" class="delete-btn">Delete Account</button>
+            </form>
+        </div>
+    </div>
 </div>
 
 </body>

@@ -220,32 +220,11 @@ $stmt->close();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Build Your Workout Routine</title>
-  <style>
-        body {
-            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
-            background: #f6f8fa;
-      margin: 0;
-      padding: 20px;
-        }
-    .container {
-            max-width: 1200px;
-      margin: 0 auto;
-            background: #fff;
-            border-radius: 18px;
-            box-shadow: 0 4px 32px rgba(0,0,0,0.07);
-            padding: 32px 18px 18px 18px;
-        }
-    h2 {
-      text-align: center;
-            color: #222;
-            margin-bottom: 18px;
-            font-size: 2.2em;
-      font-weight: 700;
-            letter-spacing: -1px;
-        }
+    <link rel="stylesheet" href="css/shared.css">
+    <style>
         .section {
             margin-bottom: 36px;
         }
@@ -260,7 +239,7 @@ $stmt->close();
             border-radius: 16px;
             box-shadow: 0 2px 12px rgba(0,0,0,0.06);
             padding: 22px 16px 16px 16px;
-      display: flex;
+            display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 240px;
@@ -306,7 +285,7 @@ $stmt->close();
             font-size: 0.97em;
             color: #3b82f6;
             margin-bottom: 4px;
-      font-weight: 500;
+            font-weight: 500;
         }
         .exercise-desc {
             font-size: 0.97em;
@@ -320,8 +299,8 @@ $stmt->close();
         .add-to-routine-form {
             display: flex;
             gap: 6px;
-      flex-wrap: wrap;
-      justify-content: center;
+            flex-wrap: wrap;
+            justify-content: center;
             margin-top: 8px;
             background: #f3f6fa;
             border-radius: 8px;
@@ -366,7 +345,7 @@ $stmt->close();
         }
         .form-row {
             display: flex;
-        gap: 10px;
+            gap: 10px;
             margin-bottom: 10px;
             background: #f3f6fa;
             border-radius: 8px;
@@ -407,8 +386,8 @@ $stmt->close();
             position: absolute;
             top: 10px;
             left: 10px;
-      display: flex;
-      align-items: center;
+            display: flex;
+            align-items: center;
             background: rgba(255,255,255,0.95);
             border-radius: 10px;
             padding: 1px 6px 1px 2px;
@@ -430,163 +409,205 @@ $stmt->close();
         }
         .exercise-card form[method='post'] button[title='Remove']:hover {
             background: #ffeaea;
-    }
-  </style>
+        }
+        .remove-btn {
+            background: #dc3545 !important;
+            color: #fff !important;
+            padding: 4px 8px !important;
+            border-radius: 4px !important;
+            text-decoration: none !important;
+            font-size: 0.9em !important;
+        }
+        .remove-btn:hover {
+            background: #c82333 !important;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        th {
+            background: #f3f6fa;
+            font-weight: 600;
+            color: #374151;
+        }
+        tr:hover {
+            background: #f9fafb;
+        }
+    </style>
 </head>
 <body>
-<a href="dashboard.php" class="home-btn">← Back to Dashboard</a>
-<div class="container">
-    <h2>Build Your Workout Routine</h2>
-    <div class="section">
-        <h3>Exercise Pool</h3>
-        <div class="exercise-grid">
-        <?php foreach ($all_exercises as $ex): ?>
-            <div class="exercise-card" style="position:relative;">
-                <?php if (!empty($ex['user_id'])): ?>
-                    <form method="post" style="position:absolute;top:10px;right:10px;z-index:3;" onsubmit="return confirm('Remove this custom exercise?');">
-                        <input type="hidden" name="remove_custom_exercise_id" value="<?php echo $ex['id']; ?>">
-                        <button type="submit" style="background:none;border:none;color:#f44336;font-size:1.3em;cursor:pointer;line-height:1;" title="Remove">&times;</button>
-                    </form>
-                    <div class="custom-badge-small">
-                        <svg width="18" height="18" viewBox="0 0 38 38" fill="none" style="vertical-align:middle;">
-                          <circle cx="19" cy="19" r="19" fill="#f59e42"/>
-                          <path d="M19 11l2.47 5.01 5.53.8-4 3.9.94 5.5L19 23.27l-4.94 2.58.94-5.5-4-3.9 5.53-.8L19 11z" fill="#fff"/>
-                        </svg>
-                        <span style="font-size:0.75em; color:#f59e42; margin-left:2px;">Custom</span>
-  </div>
-                <?php endif; ?>
-                <div class="exercise-img-placeholder">
-                    <?php if (strcasecmp($ex['name'], 'Push-ups') === 0): ?>
-                        <img src="exercise images/push up.png" alt="Push-ups" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">
-                    <?php else: ?>
-                        Image<br>Here
+    <div class="container">
+        <div class="page-header">
+            <a href="dashboard.php" class="back-btn" title="Back to Dashboard">&#8592;</a>
+            <div class="title-section">
+                <h1>Build Your Workout Routine</h1>
+                <div class="subtitle">Create and manage your exercise routines</div>
+            </div>
+            <div></div> <!-- Empty div for flex spacing -->
+        </div>
+        
+        <div class="section">
+            <h3>Exercise Pool</h3>
+            <div class="exercise-grid">
+            <?php foreach ($all_exercises as $ex): ?>
+                <div class="exercise-card" style="position:relative;">
+                    <?php if (!empty($ex['user_id'])): ?>
+                        <form method="post" style="position:absolute;top:10px;right:10px;z-index:3;" onsubmit="return confirm('Remove this custom exercise?');">
+                            <input type="hidden" name="remove_custom_exercise_id" value="<?php echo $ex['id']; ?>">
+                            <button type="submit" style="background:none;border:none;color:#f44336;font-size:1.3em;cursor:pointer;line-height:1;" title="Remove">&times;</button>
+                        </form>
+                        <div class="custom-badge-small">
+                            <svg width="18" height="18" viewBox="0 0 38 38" fill="none" style="vertical-align:middle;">
+                              <circle cx="19" cy="19" r="19" fill="#f59e42"/>
+                              <path d="M19 11l2.47 5.01 5.53.8-4 3.9.94 5.5L19 23.27l-4.94 2.58.94-5.5-4-3.9 5.53-.8L19 11z" fill="#fff"/>
+                            </svg>
+                            <span style="font-size:0.75em; color:#f59e42; margin-left:2px;">Custom</span>
+                        </div>
                     <?php endif; ?>
-    </div>
-                <div class="exercise-info">
-                    <div class="exercise-name"><?php echo safe($ex['name']); ?></div>
-                    <div class="exercise-type"><?php echo safe($ex['type']); ?></div>
-                    <div class="exercise-desc"><?php echo safe($ex['description']); ?></div>
-      </div>
-                <form method="post" class="add-to-routine-form">
-                    <input type="hidden" name="routine_exercise_id" value="<?php echo $ex['id']; ?>">
-                    <input type="number" name="routine_sets" min="1" max="10" placeholder="Sets" required>
-                    <input type="number" name="routine_reps" min="1" max="50" placeholder="Reps">
-                    <button type="submit" name="add_to_routine" class="btn">Add to Routine</button>
-                </form>
-      </div>
-        <?php endforeach; ?>
-        </div>
-        <div style="font-size:0.95em; color:#666; margin-bottom:10px; margin-top:20px;">Can't find your exercise? Add a custom one below!</div>
-    </div>
-    <div class="section">
-        <h3>Add Custom Exercise</h3>
-        <form method="post" class="form-row">
-            <input type="text" name="exercise_name" placeholder="Exercise Name" required>
-            <select name="exercise_type">
-                <option value="Strength">Strength</option>
-                <option value="Cardio">Cardio</option>
-                <option value="Core">Core</option>
-                <option value="Flexibility">Flexibility</option>
-                <option value="Other">Other</option>
-            </select>
-            <input type="text" name="exercise_desc" placeholder="Description">
-            <button type="submit" name="add_exercise" class="btn">Add Exercise</button>
-        </form>
-    </div>
-    <div class="section" style="margin-bottom:0;">
-        <button id="export-routine-btn" class="btn" style="margin-bottom:16px; float:right;">Export as Image</button>
-        <?php if (!empty($_SESSION['routine'])): ?>
-        <a href="?reset_routine=1" class="btn" style="margin-bottom:16px; float:right; margin-right:10px; background:#dc3545;" onclick="return confirm('Are you sure you want to reset your current routine? This will remove all exercises.');">Reset Routine</a>
-        <?php endif; ?>
-        <div style="clear:both;"></div>
-        <h3 style="text-align:center; margin-bottom:18px;">Your Current Routine</h3>
-        <?php if (!empty($_SESSION['routine'])): ?>
-        <table style="width:100%; background:#fafdff; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.04);">
-            <tr style="background:#f3f6fa;"><th>#</th><th>Name</th><th>Type</th><th>Sets</th><th>Reps</th><th>Remove</th></tr>
-            <?php foreach ($_SESSION['routine'] as $i => $item):
-                $ex = $all_exercises[$item['exercise_id']] ?? null;
-                if (!$ex) continue;
-            ?>
-            <tr>
-                <td><?php echo $i+1; ?></td>
-                <td><?php echo safe($ex['name']); ?></td>
-                <td><?php echo safe($ex['type']); ?></td>
-                <td><?php echo $item['sets']; ?></td>
-                <td><?php echo $item['reps']; ?></td>
-                <td><a href="?remove=<?php echo $i; ?>" class="btn remove-btn">Remove</a></td>
-            </tr>
+                    <div class="exercise-img-placeholder">
+                        <?php if (strcasecmp($ex['name'], 'Push-ups') === 0): ?>
+                            <img src="exercise images/push up.png" alt="Push-ups" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">
+                        <?php else: ?>
+                            Image<br>Here
+                        <?php endif; ?>
+                    </div>
+                    <div class="exercise-info">
+                        <div class="exercise-name"><?php echo safe($ex['name']); ?></div>
+                        <div class="exercise-type"><?php echo safe($ex['type']); ?></div>
+                        <div class="exercise-desc"><?php echo safe($ex['description']); ?></div>
+                    </div>
+                    <form method="post" class="add-to-routine-form">
+                        <input type="hidden" name="routine_exercise_id" value="<?php echo $ex['id']; ?>">
+                        <input type="number" name="routine_sets" min="1" max="10" placeholder="Sets" required>
+                        <input type="number" name="routine_reps" min="1" max="50" placeholder="Reps">
+                        <button type="submit" name="add_to_routine" class="btn">Add to Routine</button>
+                    </form>
+                </div>
             <?php endforeach; ?>
-        </table>
-        <?php else: ?>
-        <p>No exercises in your routine yet. Add from the pool above!</p>
-        <?php endif; ?>
-    </div>
-    <div id="routine-export" style="display:none; background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.07); padding:24px; position:relative; max-width:700px; margin:0 auto 24px auto;">
-        <div style="position:absolute; bottom:10px; right:16px; opacity:0.25; font-size:1.2em; pointer-events:none;">
-            <strong>Fitness Tracker</strong> | <?php echo safe($username); ?>
+            </div>
+            <div style="font-size:0.95em; color:#666; margin-bottom:10px; margin-top:20px;">Can't find your exercise? Add a custom one below!</div>
         </div>
-        <div style="position:absolute; top:10px; left:16px; opacity:0.7; font-size:0.95em; pointer-events:none;">
-            <?php echo date('M d, Y'); ?>
+        
+        <div class="section">
+            <h3>Add Custom Exercise</h3>
+            <form method="post" class="form-row">
+                <input type="text" name="exercise_name" placeholder="Exercise Name" required>
+                <select name="exercise_type">
+                    <option value="Strength">Strength</option>
+                    <option value="Cardio">Cardio</option>
+                    <option value="Core">Core</option>
+                    <option value="Flexibility">Flexibility</option>
+                    <option value="Other">Other</option>
+                </select>
+                <input type="text" name="exercise_desc" placeholder="Description">
+                <button type="submit" name="add_exercise" class="btn">Add Exercise</button>
+            </form>
         </div>
-        <h3 style="text-align:center; margin-bottom:18px;">Your Current Routine</h3>
-        <?php if (!empty($_SESSION['routine'])): ?>
-        <table style="width:100%; background:#fafdff; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.04);">
-            <tr style="background:#f3f6fa;"><th>#</th><th>Name</th><th>Type</th><th>Sets</th><th>Reps</th></tr>
-            <?php foreach ($_SESSION['routine'] as $i => $item):
-                $ex = $all_exercises[$item['exercise_id']] ?? null;
-                if (!$ex) continue;
-            ?>
-            <tr>
-                <td><?php echo $i+1; ?></td>
-                <td><?php echo safe($ex['name']); ?></td>
-                <td><?php echo safe($ex['type']); ?></td>
-                <td><?php echo $item['sets']; ?></td>
-                <td><?php echo $item['reps']; ?></td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php else: ?>
-        <p>No exercises in your routine yet. Add from the pool above!</p>
+        
+        <div class="section" style="margin-bottom:0;">
+            <button id="export-routine-btn" class="btn" style="margin-bottom:16px; float:right;">Export as Image</button>
+            <?php if (!empty($_SESSION['routine'])): ?>
+            <a href="?reset_routine=1" class="btn" style="margin-bottom:16px; float:right; margin-right:10px; background:#dc3545;" onclick="return confirm('Are you sure you want to reset your current routine? This will remove all exercises.');">Reset Routine</a>
+            <?php endif; ?>
+            <div style="clear:both;"></div>
+            <h3 style="text-align:center; margin-bottom:18px;">Your Current Routine</h3>
+            <?php if (!empty($_SESSION['routine'])): ?>
+            <table style="width:100%; background:#fafdff; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+                <tr style="background:#f3f6fa;"><th>#</th><th>Name</th><th>Type</th><th>Sets</th><th>Reps</th><th>Remove</th></tr>
+                <?php foreach ($_SESSION['routine'] as $i => $item):
+                    $ex = $all_exercises[$item['exercise_id']] ?? null;
+                    if (!$ex) continue;
+                ?>
+                <tr>
+                    <td><?php echo $i+1; ?></td>
+                    <td><?php echo safe($ex['name']); ?></td>
+                    <td><?php echo safe($ex['type']); ?></td>
+                    <td><?php echo $item['sets']; ?></td>
+                    <td><?php echo $item['reps']; ?></td>
+                    <td><a href="?remove=<?php echo $i; ?>" class="btn remove-btn">Remove</a></td>
+                </tr>
+                <?php endforeach; ?>
+            </table>
+            <?php else: ?>
+            <p>No exercises in your routine yet. Add from the pool above!</p>
+            <?php endif; ?>
+        </div>
+        
+        <div id="routine-export" style="display:none; background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.07); padding:24px; position:relative; max-width:700px; margin:0 auto 24px auto;">
+            <div style="position:absolute; bottom:10px; right:16px; opacity:0.25; font-size:1.2em; pointer-events:none;">
+                <strong>Fitness Tracker</strong> | <?php echo safe($username); ?>
+            </div>
+            <div style="position:absolute; top:10px; left:16px; opacity:0.7; font-size:0.95em; pointer-events:none;">
+                <?php echo date('M d, Y'); ?>
+            </div>
+            <h3 style="text-align:center; margin-bottom:18px;">Your Current Routine</h3>
+            <?php if (!empty($_SESSION['routine'])): ?>
+            <table style="width:100%; background:#fafdff; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+                <tr style="background:#f3f6fa;"><th>#</th><th>Name</th><th>Type</th><th>Sets</th><th>Reps</th></tr>
+                <?php foreach ($_SESSION['routine'] as $i => $item):
+                    $ex = $all_exercises[$item['exercise_id']] ?? null;
+                    if (!$ex) continue;
+                ?>
+                <tr>
+                    <td><?php echo $i+1; ?></td>
+                    <td><?php echo safe($ex['name']); ?></td>
+                    <td><?php echo safe($ex['type']); ?></td>
+                    <td><?php echo $item['sets']; ?></td>
+                    <td><?php echo $item['reps']; ?></td>
+                </tr>
+                <?php endforeach; ?>
+            </table>
+            <?php else: ?>
+            <p>No exercises in your routine yet. Add from the pool above!</p>
+            <?php endif; ?>
+        </div>
+        
+        <?php if (!empty($saved_routines)): ?>
+        <div class="section" style="margin-top:30px;">
+            <h3>Your Saved Routines</h3>
+            <table style="width:100%; background:#fafdff; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+                <tr><th>Name</th><th>Created</th><th>Load</th><th>Delete</th></tr>
+                <?php foreach ($saved_routines as $r): ?>
+                <tr>
+                    <td><?php echo safe($r['name']); ?></td>
+                    <td><?php echo date('M d, Y', strtotime($r['created_at'])); ?></td>
+                    <td><a href="?load_routine=<?php echo $r['id']; ?>" class="btn">Load</a></td>
+                    <td><a href="?delete_routine=<?php echo $r['id']; ?>" class="btn remove-btn" onclick="return confirm('Delete this routine?');">Delete</a></td>
+                </tr>
+                <?php endforeach; ?>
+            </table>
+        </div>
         <?php endif; ?>
+        
+        <div class="section" style="margin-top:20px;">
+            <h3>Save Current Routine</h3>
+            <?php if (!empty($save_msg)) echo '<div style="color:green; margin-bottom:10px;">' . safe($save_msg) . '</div>'; ?>
+            <form method="post" style="display:flex; gap:10px; align-items:center; max-width:400px;">
+                <input type="text" name="routine_name" placeholder="Routine Name" required style="flex:2; padding:8px; border-radius:5px; border:1px solid #ccc;">
+                <button type="submit" name="save_routine" class="btn" style="flex:1;">Save Routine</button>
+            </form>
+        </div>
     </div>
-    <?php if (!empty($saved_routines)): ?>
-    <div class="section" style="margin-top:30px;">
-        <h3>Your Saved Routines</h3>
-        <table style="width:100%; background:#fafdff; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.04);">
-            <tr><th>Name</th><th>Created</th><th>Load</th><th>Delete</th></tr>
-            <?php foreach ($saved_routines as $r): ?>
-            <tr>
-                <td><?php echo safe($r['name']); ?></td>
-                <td><?php echo date('M d, Y', strtotime($r['created_at'])); ?></td>
-                <td><a href="?load_routine=<?php echo $r['id']; ?>" class="btn">Load</a></td>
-                <td><a href="?delete_routine=<?php echo $r['id']; ?>" class="btn remove-btn" onclick="return confirm('Delete this routine?');">Delete</a></td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-    </div>
-    <?php endif; ?>
-    <div class="section" style="margin-top:20px;">
-        <h3>Save Current Routine</h3>
-        <?php if (!empty($save_msg)) echo '<div style="color:green; margin-bottom:10px;">' . safe($save_msg) . '</div>'; ?>
-        <form method="post" style="display:flex; gap:10px; align-items:center; max-width:400px;">
-            <input type="text" name="routine_name" placeholder="Routine Name" required style="flex:2; padding:8px; border-radius:5px; border:1px solid #ccc;">
-            <button type="submit" name="save_routine" class="btn" style="flex:1;">Save Routine</button>
-        </form>
-  </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<script>
-document.getElementById('export-routine-btn').addEventListener('click', function() {
-    var exportDiv = document.getElementById('routine-export');
-    exportDiv.style.display = 'block';
-    html2canvas(exportDiv, {backgroundColor: '#fff'}).then(function(canvas) {
-        var link = document.createElement('a');
-        link.download = 'routine_<?php echo date('Ymd_His'); ?>.png';
-        link.href = canvas.toDataURL();
-        link.click();
-        exportDiv.style.display = 'none';
+    
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script>
+    document.getElementById('export-routine-btn').addEventListener('click', function() {
+        var exportDiv = document.getElementById('routine-export');
+        exportDiv.style.display = 'block';
+        html2canvas(exportDiv, {backgroundColor: '#fff'}).then(function(canvas) {
+            var link = document.createElement('a');
+            link.download = 'routine_<?php echo date('Ymd_His'); ?>.png';
+            link.href = canvas.toDataURL();
+            link.click();
+            exportDiv.style.display = 'none';
+        });
     });
-});
-</script>
+    </script>
 </body>
 </html>

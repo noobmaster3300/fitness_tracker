@@ -32,36 +32,10 @@ $total_weeks = $lifespan * 52;
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Your Life in Weeks</title>
+    <title>Your Life in Weeks - Fitness Tracker</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/shared.css">
     <style>
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: #f3f4f6;
-            margin: 0;
-            padding: 0;
-        }
-        .main-card {
-            background: #fff;
-            max-width: 900px;
-            margin: 40px auto 0 auto;
-            border-radius: 14px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
-            padding: 32px 24px 24px 24px;
-        }
-        h2 {
-            text-align: center;
-            color: #222;
-            font-size: 2.1rem;
-            margin-bottom: 8px;
-            letter-spacing: -1px;
-        }
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 28px;
-            font-size: 1.1rem;
-        }
         .life-form {
             display: flex;
             justify-content: center;
@@ -167,15 +141,7 @@ $total_weeks = $lifespan * 52;
             margin: 8px 0 0 0;
             font-size: 1.04rem;
         }
-        .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 30px;
-        }
         @media (max-width: 700px) {
-            .main-card {
-                padding: 12px 2vw 18px 2vw;
-            }
             .weeks-grid {
                 grid-template-columns: repeat(26, 1fr);
             }
@@ -183,52 +149,56 @@ $total_weeks = $lifespan * 52;
     </style>
 </head>
 <body>
-<div class="main-card">
-    <h2>Your Life in Weeks</h2>
-    <p class="subtitle">Each square represents a week in your expected lifespan. Green squares are weeks you've already lived.</p>
-    <form class="life-form" method="post" action="">
-        <label>Date of Birth:
-            <input type="date" name="dob" value="<?php echo htmlspecialchars($dob); ?>" required>
-        </label>
-        <label>Lifespan (years):
-            <input type="number" name="lifespan" min="1" max="120" value="<?php echo htmlspecialchars($lifespan); ?>" required>
-        </label>
-        <button type="submit">Update</button>
-    </form>
-    <div class="legend">
-        <div class="legend-item"><span class="legend-color lived"></span> Past</div>
-        <div class="legend-item"><span class="legend-color present"></span> Present</div>
-        <div class="legend-item"><span class="legend-color remaining"></span> Future</div>
+<div class="container">
+    <div class="page-header">
+        <a href="dashboard.php" class="back-btn" title="Back to Dashboard">&#8592;</a>
+        <div class="title-section">
+            <h1>Your Life in Weeks</h1>
+            <div class="subtitle">Each square represents a week in your expected lifespan. Green squares are weeks you've already lived.</div>
+        </div>
     </div>
-    <div class="weeks-grid">
-        <?php
-        for ($i = 1; $i <= $total_weeks; $i++) {
-            $class = '';
-            if ($i < $weeks_lived) {
-                $class = 'lived';
-            } elseif ($i == $weeks_lived) {
-                $class = 'present';
-            }
-            echo '<div class="week' . ($class ? ' ' . $class : '') . '"></div>';
-        }
-        ?>
+
+    <div class="card mb-20">
+        <form class="life-form" method="post" action="">
+            <label>Date of Birth:
+                <input type="date" name="dob" value="<?php echo htmlspecialchars($dob); ?>" required>
+            </label>
+            <label>Lifespan (years):
+                <input type="number" name="lifespan" min="1" max="120" value="<?php echo htmlspecialchars($lifespan); ?>" required>
+            </label>
+            <button type="submit">Update</button>
+        </form>
+        
+        <div class="legend">
+            <div class="legend-item"><span class="legend-color lived"></span> Past</div>
+            <div class="legend-item"><span class="legend-color present"></span> Present</div>
+            <div class="legend-item"><span class="legend-color remaining"></span> Future</div>
+        </div>
+
+        <div class="weeks-grid">
+            <?php for ($i = 1; $i <= $total_weeks; $i++): ?>
+                <?php if ($i <= $weeks_lived): ?>
+                    <div class="week lived" title="Week <?php echo $i; ?> - Past"></div>
+                <?php elseif ($i == $weeks_lived + 1): ?>
+                    <div class="week present" title="Week <?php echo $i; ?> - Present"></div>
+                <?php else: ?>
+                    <div class="week remaining" title="Week <?php echo $i; ?> - Future"></div>
+                <?php endif; ?>
+            <?php endfor; ?>
+        </div>
     </div>
-    <div class="life-highlights" style="max-width:600px;margin:0 auto 30px auto;padding:20px;background:#fff;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,0.05);">
-        <h3 style="margin-top:0;">Life highlights</h3>
-        <?php
-        $percent = $total_weeks > 0 ? round(($weeks_lived / $total_weeks) * 100, 1) : 0;
-        $days_lived = $weeks_lived * 7;
-        $years_lived = $weeks_lived / 52;
-        $years_left = $lifespan - $years_lived;
-        $breaths = number_format($days_lived * 23000); // avg 23,000 breaths/day
-        $sleeps = number_format($days_lived); // 1 sleep per day
-        ?>
-        <p>You've lived <strong><?php echo number_format($weeks_lived); ?></strong> weeks, which is <strong><?php echo $percent; ?>%</strong> of your expected life.</p>
-        <p>That's <strong><?php echo number_format($days_lived); ?></strong> days of experience and approximately <strong><?php echo round($years_left, 1); ?></strong> years left.</p>
-        <p>You've taken about <strong><?php echo $breaths; ?></strong> breaths and slept about <strong><?php echo $sleeps; ?></strong> times.</p>
-    </div>
-    <div class="back-link">
-        <a href="dashboard.php">&larr; Back to Dashboard</a>
+
+    <div class="card">
+        <div class="life-highlights">
+            <h3>Life Highlights</h3>
+            <p><strong>Weeks Lived:</strong> <?php echo number_format($weeks_lived); ?> weeks</p>
+            <p><strong>Weeks Remaining:</strong> <?php echo number_format($total_weeks - $weeks_lived); ?> weeks</p>
+            <p><strong>Percentage Lived:</strong> <?php echo round(($weeks_lived / $total_weeks) * 100, 1); ?>%</p>
+            <?php if ($weeks_lived > 0): ?>
+                <p><strong>Years Lived:</strong> <?php echo round($weeks_lived / 52, 1); ?> years</p>
+                <p><strong>Years Remaining:</strong> <?php echo round(($total_weeks - $weeks_lived) / 52, 1); ?> years</p>
+            <?php endif; ?>
+        </div>
     </div>
 </div>
 </body>

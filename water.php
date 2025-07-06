@@ -128,39 +128,9 @@ $chart_data = array_values($week_totals);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Water Tracker</title>
+    <title>Water Tracker - Fitness Tracker</title>
+    <link rel="stylesheet" href="css/shared.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f7f7f7;
-            margin: 0;
-            padding: 0;
-        }
-        .home-btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #6c757d;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            margin: 30px 0 0 30px;
-        }
-        .home-btn:hover {
-            background-color: #545b62;
-        }
-        .container {
-            max-width: 600px;
-            margin: 30px auto;
-            background: #fff;
-            padding: 24px 18px 18px 18px;
-            border: 1px solid #e0e0e0;
-        }
-        h1 {
-            text-align: center;
-            color: #222;
-            font-size: 1.7em;
-            margin-bottom: 12px;
-        }
         .chart-area {
             margin-bottom:12px;
             width: 100%;
@@ -199,198 +169,333 @@ $chart_data = array_values($week_totals);
             background: #e0e0e0;
             border-radius: 7px;
             overflow: hidden;
-            margin: 8px 0 0 0;
         }
         .progress-fill {
             height: 100%;
-            background: #2196f3;
-            width: <?php echo $percentage; ?>%;
-            transition: width 0.3s;
+            background: linear-gradient(90deg, #007bff, #0056b3);
+            transition: width 0.3s ease;
         }
-        .stats {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1em;
-            margin-bottom: 2px;
+        .progress-fill.achieved {
+            background: linear-gradient(90deg, #28a745, #1e7e34);
         }
-        .quick-add {
+        .progress-text {
+            text-align: center;
+            margin-top: 5px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .add-water-section {
+            margin: 15px 0;
+        }
+        .quick-add-buttons {
             display: flex;
             gap: 8px;
-            margin: 10px 0 6px 0;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
         }
-        .quick-btn {
-            flex: 1;
-            padding: 10px 0;
-            background: #90caf9;
-            color: #222;
+        .quick-add-btn {
+            padding: 8px 12px;
+            background: #007bff;
+            color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 0.9em;
         }
-        .quick-btn:hover {
-            background: #42a5f5;
-            color: #fff;
+        .quick-add-btn:hover {
+            background: #0056b3;
         }
         .custom-add {
             display: flex;
             gap: 8px;
-            margin-bottom: 10px;
+            align-items: center;
         }
         .custom-add input {
-            flex: 1;
-            padding: 8px;
+            width: 80px;
+            padding: 6px;
             font-size: 1em;
         }
         .custom-add button {
-            padding: 8px 14px;
+            padding: 6px 14px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
             font-size: 1em;
         }
-        .achievement {
-            background: #43a047;
-            color: #fff;
-            text-align: center;
-            padding: 7px;
-            border-radius: 5px;
-            margin-bottom: 8px;
-            <?php if ($achieved) echo 'display:block;'; else echo 'display:none;'; ?>
+        .custom-add button:hover {
+            background: #1e7e34;
         }
-        .history {
-            margin-top: 8px;
-            max-height: 220px;
-            overflow-y: auto;
-            border: 1px solid #eee;
-            border-radius: 5px;
-            background: #fafbfc;
-            padding: 8px 10px;
+        .log-section {
+            margin-top: 20px;
         }
-        .history h3 {
-            font-size: 1.1em;
-            margin-bottom: 6px;
-            color: #333;
-        }
-        .history-item {
+        .log-entry {
             display: flex;
             justify-content: space-between;
-            font-size: 0.98em;
-            padding: 4px 0;
+            align-items: center;
+            padding: 8px 0;
             border-bottom: 1px solid #eee;
         }
-        .history-item:last-child {
+        .log-entry:last-child {
             border-bottom: none;
         }
-        .reset-btn {
-            width: 100%;
-            padding: 8px;
-            background: #e57373;
-            color: #fff;
+        .delete-btn {
+            background: #dc3545;
+            color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 1em;
-            margin-top: 10px;
+            padding: 4px 8px;
+            border-radius: 3px;
             cursor: pointer;
+            font-size: 0.8em;
+        }
+        .delete-btn:hover {
+            background: #c82333;
+        }
+        .reset-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .reset-btn {
+            padding: 8px 16px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
         }
         .reset-btn:hover {
-            background: #c62828;
+            background: #545b62;
+        }
+        .reset-btn.danger {
+            background: #dc3545;
+        }
+        .reset-btn.danger:hover {
+            background: #c82333;
+        }
+        .date-nav {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .date-nav input {
+            padding: 6px;
+            font-size: 1em;
+        }
+        .date-nav button {
+            padding: 6px 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+        .date-nav button:hover {
+            background: #0056b3;
+        }
+        .stats-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #dee2e6;
+        }
+        .stat-card h3 {
+            margin: 0 0 5px 0;
+            color: #333;
+            font-size: 1.1em;
+        }
+        .stat-card p {
+            margin: 0;
+            color: #007bff;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .achievement-badge {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-left: 10px;
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <a href="dashboard.php" class="home-btn">← Go to Dashboard</a>
-    <div class="container">
-        <h1>Water Tracker</h1>
-        <div class="chart-area">
-            <canvas id="weeklyChart" width="600" height="300"></canvas>
+<div class="container">
+    <div class="page-header">
+        <a href="dashboard.php" class="back-btn" title="Back to Dashboard">&#8592;</a>
+        <div class="title-section">
+            <h1>Water Tracker</h1>
+            <div class="subtitle">Stay hydrated and track your daily water intake</div>
         </div>
-        <form method="get" class="calendar-bar">
-            <input type="date" name="date" value="<?php echo htmlspecialchars($selected_date); ?>" max="<?php echo $date_today; ?>">
-            <button type="submit">Go</button>
-            <?php if ($selected_date !== $date_today): ?>
-                <a href="?date=<?php echo $date_today; ?>" style="margin-left:10px;text-decoration:none;padding:6px 12px;background:#eee;border-radius:4px;">Today</a>
-            <?php endif; ?>
-        </form>
-        <div class="goal-section">
-            <form class="goal-input" method="post">
-                <input type="number" name="goalInput" placeholder="<?php echo $daily_goal; ?>" min="500" max="5000">
-                <button type="submit" name="set_goal">Set Goal</button>
-            </form>
-            <div style="font-size:0.98em; color:#555;">Daily Goal: <b><?php echo $daily_goal; ?> ml</b></div>
+    </div>
+
+    <div class="card mb-20" style="margin-bottom:18px;">
+        <h3 style="margin-bottom:10px;">Weekly Overview</h3>
+        <div class="chart-area" style="margin-bottom:0; justify-content:center;">
+            <canvas id="waterChart" width="650" height="200"></canvas>
         </div>
+    </div>
+
+    <div class="card mb-20">
+        <div class="stats-summary">
+            <div class="stat-card">
+                <h3>Today's Intake</h3>
+                <p><?php echo $current_intake; ?>ml</p>
+            </div>
+            <div class="stat-card">
+                <h3>Daily Goal</h3>
+                <p><?php echo $daily_goal; ?>ml</p>
+            </div>
+            <div class="stat-card">
+                <h3>Progress</h3>
+                <p><?php echo $percentage; ?>%</p>
+            </div>
+        </div>
+
         <div class="progress-container">
-            <div class="stats">
-                <div>Current: <b><?php echo $current_intake; ?> ml</b></div>
-                <div>Goal: <b><?php echo $daily_goal; ?> ml</b></div>
-                <div><?php echo $percentage; ?>%</div>
-            </div>
             <div class="progress-bar">
-                <div class="progress-fill"></div>
+                <div class="progress-fill <?php echo $achieved ? 'achieved' : ''; ?>" style="width: <?php echo $percentage; ?>%"></div>
+            </div>
+            <div class="progress-text">
+                <?php echo $current_intake; ?>ml / <?php echo $daily_goal; ?>ml
+                <?php if ($achieved): ?>
+                    <span class="achievement-badge">Goal Achieved! 🎉</span>
+                <?php endif; ?>
             </div>
         </div>
-        <div class="achievement">🎉 Goal reached! Great job!</div>
-        <form method="post" style="margin:0;">
-            <input type="hidden" name="entry_date" value="<?php echo htmlspecialchars($selected_date); ?>">
-            <div class="quick-add">
-                <button class="quick-btn" type="submit" name="add_water" value="250">+250ml</button>
-                <button class="quick-btn" type="submit" name="add_water" value="500">+500ml</button>
-                <button class="quick-btn" type="submit" name="add_water" value="750">+750ml</button>
-                <button class="quick-btn" type="submit" name="add_water" value="1000">+1000ml</button>
+    </div>
+
+    <div class="card mb-20">
+        <h3>Set Daily Goal</h3>
+        <div class="goal-section">
+            <form method="post" class="goal-input">
+                <input type="number" name="goalInput" value="<?php echo $daily_goal; ?>" min="500" max="5000" step="100" required>
+                <button type="submit" name="set_goal">Update Goal</button>
+            </form>
+            <small>Recommended: 2000ml (8 glasses) per day</small>
+        </div>
+    </div>
+
+    <div class="card mb-20">
+        <h3>Add Water Intake</h3>
+        <div class="add-water-section">
+            <div class="quick-add-buttons">
+                <form method="post" style="display: inline;">
+                    <button type="submit" name="add_water" value="200" class="quick-add-btn">200ml</button>
+                </form>
+                <form method="post" style="display: inline;">
+                    <button type="submit" name="add_water" value="300" class="quick-add-btn">300ml</button>
+                </form>
+                <form method="post" style="display: inline;">
+                    <button type="submit" name="add_water" value="500" class="quick-add-btn">500ml</button>
+                </form>
+                <form method="post" style="display: inline;">
+                    <button type="submit" name="add_water" value="1000" class="quick-add-btn">1000ml</button>
+                </form>
             </div>
-        </form>
-        <form class="custom-add" method="post">
-            <input type="hidden" name="entry_date" value="<?php echo htmlspecialchars($selected_date); ?>">
-            <input type="number" name="amount" placeholder="Custom (ml)" min="1">
-            <button type="submit" name="add_water">Add</button>
-        </form>
-        <div class="history">
-            <h3><?php echo ($selected_date === $date_today) ? "Today's Log" : 'Log for ' . htmlspecialchars($selected_date); ?></h3>
-            <?php if (count($water_log) === 0): ?>
-                <div class="history-item"><span>No water logged<?php echo ($selected_date === $date_today) ? ' yet today' : ' for this day'; ?></span></div>
+            <form method="post" class="custom-add">
+                <input type="number" name="amount" placeholder="Custom amount" min="1" max="2000" step="50">
+                <button type="submit" name="add_water" value="0">Add</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card mb-20">
+        <h3>Today's Log</h3>
+        <div class="date-nav">
+            <input type="date" id="dateSelect" value="<?php echo $selected_date; ?>" onchange="changeDate(this.value)">
+            <button onclick="goToToday()">Today</button>
+        </div>
+        
+        <div class="log-section">
+            <?php if (empty($water_log)): ?>
+                <p class="text-center">No water intake recorded for this date.</p>
             <?php else: ?>
                 <?php foreach ($water_log as $entry): ?>
-                    <div class="history-item">
-                        <span><?php echo htmlspecialchars($entry['time']); ?></span>
-                        <span><?php echo htmlspecialchars($entry['amount']); ?>ml</span>
-                        <form method="post" style="display:inline;">
+                    <div class="log-entry">
+                        <span><?php echo $entry['amount']; ?>ml at <?php echo date('H:i', strtotime($entry['time'])); ?></span>
+                        <form method="post" style="display: inline;">
                             <input type="hidden" name="delete_entry_id" value="<?php echo $entry['id']; ?>">
-                            <button type="submit" onclick="return confirm('Delete this entry?');" style="background:#e57373;color:#fff;border:none;padding:2px 8px;border-radius:3px;cursor:pointer;">Delete</button>
+                            <button type="submit" class="delete-btn" onclick="return confirm('Delete this entry?')">Delete</button>
                         </form>
                     </div>
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
-        <form method="post">
-            <button class="reset-btn" type="submit" name="reset_day">Reset Today</button>
-            <button class="reset-btn" type="submit" name="reset_all" onclick="return confirm('Are you sure you want to delete ALL your water logs? This cannot be undone!');">Reset All</button>
-        </form>
+
+        <div class="reset-buttons">
+            <form method="post" style="display: inline;">
+                <button type="submit" name="reset_day" class="reset-btn" onclick="return confirm('Reset today\'s entries?')">Reset Today</button>
+            </form>
+            <form method="post" style="display: inline;">
+                <button type="submit" name="reset_all" class="reset-btn danger" onclick="return confirm('Delete ALL water intake records? This cannot be undone!')">Reset All</button>
+            </form>
+        </div>
     </div>
-    <script>
-    const ctx = document.getElementById('weeklyChart').getContext('2d');
-    const weeklyChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: <?php echo json_encode($chart_labels); ?>,
-            datasets: [{
-                label: 'Daily Intake (ml)',
-                data: <?php echo json_encode($chart_data); ?>,
-                backgroundColor: '#90caf9',
-                borderColor: '#2196f3',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: { stepSize: 500 }
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+function changeDate(date) {
+    window.location.href = '?date=' + date;
+}
+
+function goToToday() {
+    window.location.href = 'water.php';
+}
+
+// Chart.js for weekly overview
+const ctx = document.getElementById('waterChart').getContext('2d');
+const chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: <?php echo json_encode(array_map(function($label) { return $label[0]; }, $chart_labels)); ?>,
+        datasets: [{
+            label: 'Water Intake (ml)',
+            data: <?php echo json_encode($chart_data); ?>,
+            backgroundColor: 'rgba(0, 123, 255, 0.7)',
+            borderColor: 'rgba(0, 123, 255, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: false,
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Milliliters'
                 }
             },
-            plugins: {
-                legend: { display: false }
+            x: {
+                title: {
+                    display: true,
+                    text: 'Day of Week'
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                display: false
             }
         }
-    });
-    </script>
+    }
+});
+</script>
 </body>
 </html>
 
